@@ -1,0 +1,59 @@
+# Node dependencies
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build output
+dist/
+build/
+out/
+
+# TypeScript
+*.tsbuildinfo
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs/
+*.log
+*.log.*
+log.txt
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sw?
+*.sublime-workspace
+*.sublime-project
+
+# Temporary files
+.tmp/
+temp/
+.cache/
+coverage/
+
+# Testing
+jest-cache/
+jest-results/
+test-results.xml
+
+# Database files (if applicable)
+*.sqlite
+*.db
+*.db-journal
+
+# Other
+# Ignore compiled JavaScript in src (if you compile directly there)
+src/**/*.js
+src/**/*.js.map

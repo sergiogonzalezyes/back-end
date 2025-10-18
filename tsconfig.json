@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    /* === File structure === */
+    "rootDir": "src",
+    "outDir": "dist",
+
+    /* === Environment settings === */
+    "target": "ES2020",                  // Modern JS features, widely supported
+    "module": "CommonJS",                // Required for Node runtime
+    "esModuleInterop": true,             // Allows `import express from 'express'`
+    "moduleResolution": "node",          // Makes module resolution consistent with Node
+    "resolveJsonModule": true,           // Lets you import .json files if needed
+
+    /* === Strictness === */
+    "strict": true,                      // Enables all strict type-checking
+    "skipLibCheck": true,                // Skip type checking node_modules
+
+    /* === Source maps (optional, helpful for debugging) === */
+    "sourceMap": true,
+
+    /* === Node typing === */
+    "types": ["node"],
+
+    /* === Performance / quality === */
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}
