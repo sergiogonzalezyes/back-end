@@ -9,3 +9,4 @@ export const pool = new Pool({
 pool.on('connect', async (client) => {
     await client.query(`SET search_path TO ${process.env.DB_SCHEMA || 'tcg'}, public`);
 });
+

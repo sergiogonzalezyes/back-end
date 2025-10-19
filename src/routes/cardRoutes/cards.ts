@@ -3,12 +3,23 @@ import { pool } from '../../db/client';
 
 const router = Router();
 
-console.log('✅ cardRoutes loaded'); // Confirm subrouter is being imported
+router.get("/", async (req, res) => {
+  try {
+    console.log("📥 GET /api/cards");
 
-router.get('/', async (_, res) => {
-  console.log('📥 GET /api/cards');
-  const result = await pool.query('SELECT * FROM tcg_card LIMIT 10');
-  res.json(result.rows);
+    const lastId = parseInt(req.query.last_id as string) || 0;
+    const limit = parseInt(req.query.limit as string) || 10;
+
+    const result = await pool.query(
+      `SELECT * FROM tcg.astp_get_cards_pagination($1::int, $2::int)`,
+      [lastId, limit]
+    );
+
+    res.json(result.rows);
+  } catch (error) {
+    console.error("❌ Error fetching paginated cards:", error);
+    res.status(500).json({ message: "Failed to fetch cards" });
+  }
 });
 
 router.get('/:id', async (req, res) => {
