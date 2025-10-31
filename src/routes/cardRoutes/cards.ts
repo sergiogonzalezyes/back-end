@@ -6,13 +6,14 @@ const router = Router();
 router.get("/", async (req, res) => {
   try {
     console.log("📥 GET /api/cards");
-
+    console.log('Query Params:', req.query);
     const lastId = parseInt(req.query.last_id as string) || 0;
     const limit = parseInt(req.query.limit as string) || 10;
+    const search = (req.query.search as string)?.trim() || null; // optional search
 
     const result = await pool.query(
-      `SELECT * FROM tcg.astp_get_cards_pagination($1::int, $2::int)`,
-      [lastId, limit]
+      `SELECT * FROM tcg.astp_get_cards_pagination($1::int, $2::int, $3::text)`,
+      [lastId, limit, search]
     );
 
     res.json(result.rows);
@@ -21,6 +22,7 @@ router.get("/", async (req, res) => {
     res.status(500).json({ message: "Failed to fetch cards" });
   }
 });
+
 
 router.get('/:id', async (req, res) => {
   console.log('📥 GET /api/cards/:id');
