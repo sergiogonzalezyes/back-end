@@ -56,7 +56,6 @@ router.get('/:id/cards', async (req, res) => {
   }
 });
 
-
 /**
  * POST /api/collections
  * Creates a new collection for a given user.
@@ -151,5 +150,43 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+/** POST /api/collections/:id/cards
+ * Adds a card to a specific collection
+ */
+router.post('/:id/cards', async (req, res) => {
+  const collectionId = parseInt(req.params.id); // convert to number
+  const {
+    card_id,
+    user_id,
+    quantity = 1,
+    condition = 'NM',
+    is_foil = false,
+    notes = null,
+  } = req.body;
+
+  console.log('Adding card:', { collectionId, card_id, user_id, quantity, condition, is_foil, notes });
+
+  // validate required fields
+  if (isNaN(collectionId) || !card_id || !user_id) {
+    return res.status(400).json({ error: 'Missing or invalid fields' });
+  }
+
+  try {
+    const result = await pool.query(
+      `SELECT * FROM tcg.astp_add_card_to_collection($1::int, $2::int, $3::int, $4::int, $5::text, $6::boolean, $7::text)`,
+      [collectionId, card_id, user_id, quantity, condition, is_foil, notes]
+    );
+
+    // SP returns a status message
+    const statusMessage = result.rows[0]?.status || 'Card added';
+    res.status(201).json({ message: statusMessage });
+  } catch (err: any) {
+    if (err.message.includes('Unauthorized')) {
+      return res.status(403).json({ error: 'Unauthorized' });
+    }
+    console.error('❌ Error adding card:', err);
+    res.status(500).json({ error: 'Failed to add card' });
+  }
+});
 
 export default router;
