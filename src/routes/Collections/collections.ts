@@ -159,12 +159,12 @@ router.post('/:id/cards', async (req, res) => {
     card_id,
     user_id,
     quantity = 1,
-    condition = 'NM',
+    condition_id = 'NM',
     is_foil = false,
     notes = null,
   } = req.body;
 
-  console.log('Adding card:', { collectionId, card_id, user_id, quantity, condition, is_foil, notes });
+  console.log('Adding card:', { collectionId, card_id, user_id, quantity, condition_id, is_foil, notes });
 
   // validate required fields
   if (isNaN(collectionId) || !card_id || !user_id) {
@@ -173,8 +173,8 @@ router.post('/:id/cards', async (req, res) => {
 
   try {
     const result = await pool.query(
-      `SELECT * FROM tcg.astp_add_card_to_collection($1::int, $2::int, $3::int, $4::int, $5::text, $6::boolean, $7::text)`,
-      [collectionId, card_id, user_id, quantity, condition, is_foil, notes]
+      `SELECT * FROM tcg.astp_add_card_to_collection($1::int, $2::int, $3::int, $4::int, $5::int, $6::boolean, $7::text)`,
+      [collectionId, card_id, user_id, quantity, condition_id, is_foil, notes]
     );
 
     // SP returns a status message
